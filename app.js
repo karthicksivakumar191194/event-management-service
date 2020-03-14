@@ -4,12 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 //mongoose
-const mongoose = require('mongoose')
-
-var indexRouter = require('./routes/index');
-/* App Routes Start */
-
-/* App Routes End */
+//const mongoose = require('mongoose')
+//routes
+var routes = require('./routes');
 
 var app = express();
 
@@ -36,10 +33,8 @@ app.all('/', function(req, res, next) {
     next();
 });
 
-app.use('/', indexRouter);
-
 /* App Routes Start */
-
+app.use('/', routes);
 /* App Routes End */
 
 // catch 404 and forward to error handler
