@@ -1,0 +1,19 @@
+GET http://localhost:1911/users
+
+###
+
+POST http://localhost:1911/users
+Content-Type: application/json
+
+{
+  "fName": "Test1",
+  "lName": "Test11",
+  "email": "test@test.com",
+  "password": "11",
+  "address": "Test Address",
+  "city": "Test City",
+  "country": "Test Country",
+  "postalCode": "Test PostalCode"
+}
+
+###
