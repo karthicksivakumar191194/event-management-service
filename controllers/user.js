@@ -4,7 +4,7 @@ exports.index = async function(req, res, next) {
    try {
      const users = await User.find({})
      //console.log(users.length);
-     res.json(users)
+     res.status(200).json(users)
    } catch (err) {
      res.status(500).json({ message: err.message })
    }
