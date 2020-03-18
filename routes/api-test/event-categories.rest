@@ -1,0 +1,13 @@
+GET http://localhost:1911/event-categories
+
+###
+
+POST http://localhost:1911/event-categories
+Content-Type: application/json
+
+{
+  "name": "Test Category1",
+  "description": "Test"
+}
+
+###

@@ -1,0 +1,13 @@
+GET http://localhost:1911/event-locations
+
+###
+
+POST http://localhost:1911/event-locations
+Content-Type: application/json
+
+{
+  "name": "Test Location1",
+  "description": "Test"
+}
+
+###

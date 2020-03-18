@@ -1,0 +1,22 @@
+GET http://localhost:1911/events
+
+###
+
+POST http://localhost:1911/events
+Content-Type: application/json
+
+{
+  "title": "Test Event1",
+  "category": "5e72377bd7616d315438a62e",
+  "location": "5e723792d7616d315438a62f",
+  "price": "500",
+  "availableTickets": "10",
+  "maxTicketsPerUser": 2,
+  "startDate": "2020-03-18",
+  "endDate": "2020-03-19",
+  "time": "20:30",
+  "description": "Testing...........",
+  "createdBy": "5e723700d19fc83f70d7cd3f"
+}
+
+###
