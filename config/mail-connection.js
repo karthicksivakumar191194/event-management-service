@@ -10,8 +10,8 @@ let transporter = nodeMailer.createTransport({
     }
 });
 
-exports.sendMail = function (mailOptions) {
-    transporter.sendMail(mailOptions, (error, info) => {
+exports.sendMail = async function (mailOptions) {
+    await transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log(error);
             return false;

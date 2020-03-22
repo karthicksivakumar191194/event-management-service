@@ -8,12 +8,8 @@ Content-Type: application/json
 {
   "fName": "Test2",
   "lName": "Test11",
-  "email": "test@test.com",
-  "password": "11",
-  "address": "Test Address",
-  "city": "Test City",
-  "country": "Test Country",
-  "postalCode": "Test PostalCode"
+  "email": "test21@test.com",
+  "sendInvite": true
 }
 
 ###
