@@ -16,7 +16,9 @@ exports.sendMail = async function (mailOptions) {
             console.log(error);
             return false;
         }
+            
         console.log('Message %s sent: %s', info.messageId, info.response);
         return true;
+   
     });
 }

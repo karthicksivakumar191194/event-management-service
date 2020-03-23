@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 exports.index = function (req) {}
 
-exports.save = async function (req) {
+exports.save = function (req) {
     const userValidation = validateFields(req, 'save');
     if (userValidation.error) {
         var error = userValidation.error;
@@ -29,33 +29,36 @@ exports.save = async function (req) {
         } = {}
     } = userValidation;
 
-    //Check if user exists
+    //Check if user email exists and add user if not exists
     return User
         .findOne({email})
         .then(user => {
             if (user) {
+                //User Email already exits on DB
                 var errorMessage = {
                     status: 'failure',
                     msg: 'Email has been already taken'
                 }
                 return errorMessage;
-            }
+            } else {
+                //User not exits on DB - Add User
+                const password = generateRandomPassword();
+                const newUser = new User({fName, lName, email, password});
 
-            const password = generateRandomPassword();
-            const newUser = new User({fName, lName, email, password});
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) 
+                            throw err;
+                        newUser.password = hash;
+                    })
+                })
 
-            //Hash Password, Save user to DB, Send email invite to user if applicable
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) 
-                        throw err;
-                    newUser.password = hash;
-                    newUser
-                        .save()
-                        .then(user => {
-                            //Send Email Invite to User if set true
-                            if (sendInvite) {
-                                var mailBody = `
+                return newUser
+                    .save()
+                    .then(user => {
+                        //Send Email Invite to User if set true
+                        if (sendInvite) {
+                            var mailBody = `
                                 <p>Hi ${fName} ${lName},</p>
                                 <p>You have been added to the ${process.env.SITE_NAME}, please find below your login credentials.</p>
                                 <p>
@@ -64,43 +67,33 @@ exports.save = async function (req) {
                                 </p>
                                 `;
 
-                                let mailOptions = {
-                                    from: `"${process.env.SITE_NAME}" <no-reply@gmail.com>`,
-                                    to: 'karthik@zaigoinfotech.com',
-                                    subject: `${process.env.SITE_NAME} | New User Account Notification`,
-                                    html: mailBody
-                                };
+                            let mailOptions = {
+                                from: `"${process.env.SITE_NAME}" <no-reply@gmail.com>`,
+                                to: 'karthik@zaigoinfotech.com',
+                                subject: `${process.env.SITE_NAME} | New User Account Notification`,
+                                html: mailBody
+                            };
 
-                                var userInviteMail = Mail.sendMail(mailOptions);
-                                //console.log('userInviteMail', userInviteMail);
-                                if(!userInviteMail){
-                                    var errorMessage = {
-                                        status: 'failure',
-                                        msg: 'Error while sending email notification to user'
-                                    }
-                                    return errorMessage;
-                                }else{
-                                    var message = {
-                                        status: 'success',
-                                        msg: 'User Registered Sucessfullyy'
-                                    }
-                                    console.log(message);
-                                    return message;
+                            var userInviteMail = Mail.sendMail(mailOptions);
+                            if (!userInviteMail) {
+                                var errorMessage = {
+                                    status: 'failure',
+                                    msg: 'Error while sending email notification to user'
                                 }
+                                return errorMessage;
                             }
+                        }
 
-                            var message = {
-                                status: 'success',
-                                msg: 'User Registered Sucessfully'
-                            }
-                            console.log(message);
-                            return message;
+                        var message = {
+                            status: 'success',
+                            msg: 'User Registered Sucessfully'
+                        }
+                        return message;
 
-                        })
-                })
-            })
-
-        });
+                    })
+                //User not exits on DB - Add User
+            }
+        })
 
 }
 
@@ -119,8 +112,7 @@ function validateFields(req, module) {
             .email()
             .required()
             .messages({'any.required': 'Email is required', 'string.email': 'Email must be a valid email'}),
-        sendInvite: Joi
-            .boolean()    
+        sendInvite: Joi.boolean()
     };
 
     const userFieldValidateschema = Joi.object(jObj);
