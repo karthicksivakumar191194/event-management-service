@@ -6,9 +6,9 @@ POST http://localhost:1911/users
 Content-Type: application/json
 
 {
-  "fName": "Test2",
-  "lName": "Test11",
-  "email": "test38@test.com",
+  "fName": "Test4",
+  "lName": "Test0",
+  "email": "test46@test.com",
   "sendInvite": true
 }
 

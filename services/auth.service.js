@@ -1,6 +1,8 @@
 const User = require('../models/user.model')
 const ValidationHelper = require('../helpers/validation')
 const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs')
 
 class AuthService {
 
@@ -70,9 +72,32 @@ class AuthService {
                     }
                     return errorMessage;
                 }
-            });
 
-        //res.status(201).json('Success!');
+                //Validating Password
+                return bcrypt
+                    .compare(password, user.password)
+                    .then(isMatch => {
+                        if (!isMatch) {
+                            var errorMessage = {
+                                status: 'failure',
+                                msg: 'Invalid Credentials'
+                            }
+                            return errorMessage;
+                        } 
+                        //Generate JWT Token
+                        var token = jwt.sign({
+                            id: user.id
+                        }, process.env.JWT_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRY});
+                        if(token){
+                            var message = {
+                                status: 'success',
+                                msg: {token}
+                            }
+                            return message;
+                        }
+                    })
+
+            });
     }
 
     regenerateAuthtoken() {}

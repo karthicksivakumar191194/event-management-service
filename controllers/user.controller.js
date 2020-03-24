@@ -15,7 +15,7 @@ exports.index = async function (req, res, next) {
 }
 
 exports.save = async function (req, res, next) {
-    const result = await UserService.save(req, res); console.log('controller', result)
+    const result = await UserService.save(req, res); 
     if (result) {
         if (result.status == 'failure') {
             res

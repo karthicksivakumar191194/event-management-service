@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 exports.index = function (req) {}
 
-exports.save = function (req) {
+exports.save = async function (req) {
     const userValidation = validateFields(req, 'save');
     if (userValidation.error) {
         var error = userValidation.error;
@@ -41,17 +41,12 @@ exports.save = function (req) {
                 }
                 return errorMessage;
             } else {
-                //User not exits on DB - Add User
+                //User not exits on DB - Add User Start
                 const password = generateRandomPassword();
                 const newUser = new User({fName, lName, email, password});
 
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        if (err) 
-                            throw err;
-                        newUser.password = hash;
-                    })
-                })
+                let hash = bcrypt.hashSync(newUser.password, 10);
+                newUser.password = hash;
 
                 return newUser
                     .save()
@@ -91,7 +86,7 @@ exports.save = function (req) {
                         return message;
 
                     })
-                //User not exits on DB - Add User
+                //User not exits on DB - Add User End
             }
         })
 
