@@ -1,9 +1,9 @@
 var express = require('express');
 var router  = express.Router();
 
-let user = require('../controllers/user.controller');
+let userController = require('../controllers/user.controller');
 
-router.get('/', user.index);
-router.post('/', user.save);
+router.get('/', userController.index);
+router.post('/', userController.save);
 
 module.exports = router;

@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-let auth = require('../controllers/auth.controller');
+// Auth
+var auth = require('../middleware/auth')
 
-router.post('/login', auth.login);
-router.post('/regenerate-authtoken', auth.regenerateAuthtoken);
-router.get('/user', auth.user);
+let authController = require('../controllers/auth.controller');
+
+router.post('/login', authController.login);
+router.post('/regenerate-authtoken', authController.regenerateAuthtoken);
+router.get('/user', auth, authController.user);
 
 module.exports = router;

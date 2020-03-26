@@ -22,7 +22,38 @@ exports.login = async(req, res, next) => {
 
 exports.regenerateAuthtoken = async function (req, res, next) {
     const result = await authService.regenerateAuthtoken(req, res);
-    console.log(result);
+    if (result) {
+        if (result.status == 'failure') {
+            res
+                .status(400)
+                .json({msg: result})
+        } else {
+            res
+                .status(200)
+                .json({msg: result})
+        }
+    } else {
+        res
+            .status(500)
+            .json({msg: 'Internal Error!'})
+    }
 }
 
-exports.user = async function (req, res, next) {}
+exports.user = async function (req, res, next) {
+    const result = await authService.getUserByAccessToken(req, res);
+    if (result) {
+        if (result.status == 'failure') {
+            res
+                .status(400)
+                .json({msg: result})
+        } else {
+            res
+                .status(200)
+                .json({msg: result})
+        }
+    } else {
+        res
+            .status(500)
+            .json({msg: 'Internal Error!'})
+    }
+}

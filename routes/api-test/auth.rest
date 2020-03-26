@@ -17,3 +17,8 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://localhost:1911/auth/user
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTIyMTcwNCwiZXhwIjoxNTg1MjI1MzA0fQ.UxJJYZ3TeUIMyZtU3eXsIzjkF1MLBdVEs_8Dd9nNRFs
+
+###

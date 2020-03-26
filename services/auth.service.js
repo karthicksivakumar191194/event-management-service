@@ -172,7 +172,29 @@ class AuthService {
 
     }
 
-    getUserByAccessToken() {}
+    getUserByAccessToken(req) {
+        const {
+            user = ''
+        } = req;
+
+        return User
+            .findById(user, '-password')
+            .then(user => {
+                if (!user) {
+                    var errorMessage = {
+                        status: 'failure',
+                        msg: 'User does not exists'
+                    }
+                    return errorMessage;
+                }
+                var message = {
+                    status: 'success',
+                    msg: 'User Details',
+                    user
+                }
+                return message;
+            })
+    }
 
 }
 
