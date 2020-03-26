@@ -20,6 +20,9 @@ exports.login = async(req, res, next) => {
     }
 }
 
-exports.regenerateAuthtoken = async function (req, res, next) {}
+exports.regenerateAuthtoken = async function (req, res, next) {
+    const result = await authService.regenerateAuthtoken(req, res);
+    console.log(result);
+}
 
 exports.user = async function (req, res, next) {}

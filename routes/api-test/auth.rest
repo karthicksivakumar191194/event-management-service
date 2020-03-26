@@ -7,3 +7,13 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:1911/auth/regenerate-authtoken
+Content-Type: application/json
+
+{
+  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTIxMjYxNSwiZXhwIjoxNTg1MjE2MjE1fQ.3aGkKsUK9X1nCYllfkIc0Hzt_BiocwGtFfHjhRt7Zk0",
+  "refreshToken": "TZuYL2P3D4"
+}
+
+###

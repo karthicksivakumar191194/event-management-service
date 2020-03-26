@@ -83,15 +83,16 @@ class AuthService {
                                 msg: 'Invalid Credentials'
                             }
                             return errorMessage;
-                        } 
+                        }
                         //Generate JWT Token
                         var token = jwt.sign({
                             id: user.id
                         }, process.env.JWT_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRY});
-                        if(token){
+                        if (token) {
                             var message = {
                                 status: 'success',
-                                msg: {token}
+                                msg: 'User LoggedIn Sucessfully',
+                                token
                             }
                             return message;
                         }
@@ -100,7 +101,76 @@ class AuthService {
             });
     }
 
-    regenerateAuthtoken() {}
+    regenerateAuthtoken(req) {
+
+        const {authToken, refreshToken} = req.body;
+
+        //Custom Joi Validation
+        const verifyJWTToken = (value, helpers) => {
+
+            try {
+                jwt.verify(authToken, process.env.JWT_SECRET, {ignoreExpiration: true});
+            } catch (e) {
+                if (e.name === 'JsonWebTokenError') {
+                    //invalid JSON Token
+                    return helpers.error('any.invalid');
+                }
+            }
+
+            return value;
+        };
+
+        const verifyRefreshToken = (value, helpers) => {
+
+            if (value != process.env.API_REFRESH_TOKEN) {
+                return helpers.error('any.invalid');
+            }
+
+            return value;
+        };
+
+        const fieldValidateschema = Joi.object({
+            authToken: Joi
+                .required()
+                .custom(verifyJWTToken)
+                .messages({'any.required': 'Auth Token is required', 'any.invalid': 'Invalid Auth Token'}),
+            refreshToken: Joi
+                .required()
+                .custom(verifyRefreshToken)
+                .messages({'any.required': 'Refresh Token is required', 'any.invalid': 'Refresh Token is invalid'})
+        }).options({abortEarly: false});
+
+        const validation = fieldValidateschema.validate(req.body);
+
+        if (validation.error) {
+            var error = validation.error;
+
+            var errorMessage = {
+                status: 'failure',
+                msg: 'Field Validation Error',
+                oldValues: error._original,
+                error: ValidationHelper.joiGenerateValidationError(error.details)
+            }
+
+            return errorMessage;
+        }
+
+        const exToken = jwt.verify(authToken, process.env.JWT_SECRET, {ignoreExpiration: true});
+
+        //Generate JWT Token
+        var token = jwt.sign({
+            id: exToken.id
+        }, process.env.JWT_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRY});
+        if (token) {
+            var message = {
+                status: 'success',
+                msg: 'New Token Generated Sucessfully',
+                token
+            }
+            return message;
+        }
+
+    }
 
     getUserByAccessToken() {}
 
