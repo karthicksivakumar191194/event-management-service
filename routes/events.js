@@ -1,9 +1,15 @@
 var express = require('express');
 var router  = express.Router();
 
-let event = require('../controllers/event');
+// Middleware
+var auth = require('../middleware/auth')
+var checkIfEventExist = require('../middleware/checkIfEventExist')
 
-router.get('/', event.index);
-router.post('/', event.save);
+let event = require('../controllers/event.controller');
+
+router.get('/', auth, event.index);
+router.post('/', auth, event.save);
+router.get('/:id', auth, checkIfEventExist, event.edit);
+router.put('/:id', auth, checkIfEventExist, event.update);
 
 module.exports = router;

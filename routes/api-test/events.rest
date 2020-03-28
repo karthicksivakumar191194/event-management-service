@@ -3,6 +3,7 @@ GET http://localhost:1911/events
 ###
 
 POST http://localhost:1911/events
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTMyODQwMiwiZXhwIjoxNTg1NDE0ODAyfQ.mjB9Rwm9ZAGWfbexP8ZQPU8AFSQFZRcQwcwhU0DQ8s8
 Content-Type: application/json
 
 {
@@ -13,10 +14,13 @@ Content-Type: application/json
   "availableTickets": "10",
   "maxTicketsPerUser": 2,
   "startDate": "2020-03-18",
-  "endDate": "2020-03-19",
-  "time": "20:30",
+  "endDate": "2020-03-18",
+  "time": "23:59",
   "description": "Testing...........",
   "createdBy": "5e723700d19fc83f70d7cd3f"
 }
 
 ###
+
+GET http://localhost:1911/events/5e723853d7616d315438a630
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTMxMTY0NywiZXhwIjoxNTg1MzE1MjQ3fQ.O3lj87OQ9KutVVTt9nC52bFBWsHwMLQVN4jEm1pZybg
