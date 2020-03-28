@@ -32,10 +32,11 @@ class AuthService {
                 .email()
                 .required()
                 .label("Email Address")
-                .messages({'any.required': 'Email is required', 'string.email': 'Email must be a valid email'}),
+                .messages({'any.required': 'Email is required', 'string.email': 'Email must be a valid email', 'any.empty': 'Email should not be empty'}),
             password: Joi
+                .string()
                 .required()
-                .messages({'any.required': 'Password is required'})
+                .messages({'any.required': 'Password is required', 'any.empty': 'Password should not be empty'})
         }).options({abortEarly: false});
 
         const loginValidation = loginFieldValidateschema.validate(req.body);
@@ -131,13 +132,15 @@ class AuthService {
 
         const fieldValidateschema = Joi.object({
             authToken: Joi
+                .string()
                 .required()
                 .custom(verifyJWTToken)
-                .messages({'any.required': 'Auth Token is required', 'any.invalid': 'Invalid Auth Token'}),
+                .messages({'any.required': 'Auth Token is required', 'any.invalid': 'Invalid Auth Token', 'any.empty': 'Auth Token should not be empty'}),
             refreshToken: Joi
+                .string()
                 .required()
                 .custom(verifyRefreshToken)
-                .messages({'any.required': 'Refresh Token is required', 'any.invalid': 'Refresh Token is invalid'})
+                .messages({'any.required': 'Refresh Token is required', 'any.invalid': 'Refresh Token is invalid', 'any.empty': 'Refresh Token should not be empty'})
         }).options({abortEarly: false});
 
         const validation = fieldValidateschema.validate(req.body);

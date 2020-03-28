@@ -23,7 +23,7 @@ exports.save = async function (req, res, next) {
                 .json({msg: result})
         } else {
             res
-                .status(200)
+                .status(201)
                 .json({msg: result})
         }
     } else {

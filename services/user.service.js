@@ -97,11 +97,13 @@ exports.update = function (req) {}
 function validateFields(req, module) {
     var jObj = {
         fName: Joi
+            .string()
             .required()
-            .messages({'any.required': 'First Name is required'}),
+            .messages({'any.required': 'First Name is required', 'any.empty': 'First Name should not be empty'}),
         lName: Joi
+            .string()
             .required()
-            .messages({'any.required': 'Last Name is required'}),
+            .messages({'any.required': 'Last Name is required', 'any.empty': 'Last Name should not be empty'}),
         email: Joi
             .string()
             .email()
