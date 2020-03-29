@@ -1,36 +1,23 @@
 const UserService = require('../services/user.service');
+const ResponseHelper = require('../helpers/apiResponse')
 
-exports.index = async function (req, res, next) {
+exports.index = async function (req, res) {
     try {
-        const users = await User.find({})
+        const users = await UserService.index();
         //console.log(users.length);
         res
             .status(200)
-            .json(users)
+            .json({status: 'Success', msg: 'Users List', data: users})
     } catch (err) {
         res
             .status(500)
-            .json({message: err.message})
+            .json({msg: err.message})
     }
 }
 
-exports.save = async function (req, res, next) {
-    const result = await UserService.save(req, res); 
-    if (result) {
-        if (result.status == 'failure') {
-            res
-                .status(400)
-                .json({msg: result})
-        } else {
-            res
-                .status(201)
-                .json({msg: result})
-        }
-    } else {
-        res
-            .status(500)
-            .json({msg: 'Internal Error!'})
-    }
+exports.save = async function (req, res) {
+    const result = await UserService.save(req);
+    ResponseHelper.renderResponse(res, result);
 }
 
 exports.edit = function (req, res, next) {}

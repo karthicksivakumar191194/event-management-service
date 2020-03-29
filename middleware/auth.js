@@ -17,14 +17,14 @@ function auth(req, res, next) {
         if (e.name === 'TokenExpiredError') {
             res
                 .status(400)
-                .json({msg: 'Auth Token has been expired.'})
+                .json({success: false, errorCode: 4001, msg: 'Auth Token has been expired.'})
         } else if (e.name === 'JsonWebTokenError') {
             res
                 .status(400)
-                .json({msg: 'Invalid Auth Token.'})
+                .json({success: false, errorCode: 4001, msg: 'Invalid Auth Token.'})
         } else {
             res
-                .status(400)
+                .status(500)
                 .json({msg: e.name})
         }
     }

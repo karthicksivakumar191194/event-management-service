@@ -4,15 +4,19 @@ const Mail = require('../config/mail-connection');
 const Joi = require('@hapi/joi');
 const bcrypt = require('bcryptjs')
 
-exports.index = function (req) {}
+exports.index = function () {
+    return User.find({});
+}
 
-exports.save = async function (req) {
+exports.save = function (req) {
     const userValidation = validateFields(req, 'save');
     if (userValidation.error) {
         var error = userValidation.error;
 
         var errorMessage = {
-            status: 'failure',
+            code: 400,
+            success: false,
+            errorCode: 4002,
             msg: 'Field Validation Error',
             oldValues: error._original,
             error: ValidationHelper.joiGenerateValidationError(error.details)
@@ -36,8 +40,19 @@ exports.save = async function (req) {
             if (user) {
                 //User Email already exits on DB
                 var errorMessage = {
-                    status: 'failure',
-                    msg: 'Email has been already taken'
+                    code: 400,
+                    success: false,
+                    errorCode: 4002,
+                    msg: 'Field Validation Error',
+                    oldValues: {
+                        fName,
+                        lName,
+                        email,
+                        sendInvite
+                    },
+                    error: {
+                        email: 'Email has been already taken'
+                    }
                 }
                 return errorMessage;
             } else {
@@ -54,17 +69,17 @@ exports.save = async function (req) {
                         //Send Email Invite to User if set true
                         if (sendInvite) {
                             var mailBody = `
-                                <p>Hi ${fName} ${lName},</p>
-                                <p>You have been added to the ${process.env.SITE_NAME}, please find below your login credentials.</p>
-                                <p>
-                                    <strong>Email: </strong>${email}<br>
-                                    <strong>Password: </strong>${password}
-                                </p>
-                                `;
+                                    <p>Hi ${fName} ${lName},</p>
+                                    <p>You have been added to the ${process.env.SITE_NAME}, please find below your login credentials.</p>
+                                    <p>
+                                        <strong>Email: </strong>${email}<br>
+                                        <strong>Password: </strong>${password}
+                                    </p>
+                                    `;
 
                             let mailOptions = {
                                 from: `"${process.env.SITE_NAME}" <no-reply@gmail.com>`,
-                                to: 'karthik@zaigoinfotech.com',
+                                to: process.env.SITE_ADMIN_EMAIL,
                                 subject: `${process.env.SITE_NAME} | New User Account Notification`,
                                 html: mailBody
                             };
@@ -72,7 +87,8 @@ exports.save = async function (req) {
                             var userInviteMail = Mail.sendMail(mailOptions);
                             if (!userInviteMail) {
                                 var errorMessage = {
-                                    status: 'failure',
+                                    code: 500,
+                                    success: false,
                                     msg: 'Error while sending email notification to user'
                                 }
                                 return errorMessage;
@@ -80,7 +96,8 @@ exports.save = async function (req) {
                         }
 
                         var message = {
-                            status: 'success',
+                            code: 201,
+                            success: true,
                             msg: 'User Registered Sucessfully'
                         }
                         return message;
@@ -99,17 +116,19 @@ function validateFields(req, module) {
         fName: Joi
             .string()
             .required()
-            .messages({'any.required': 'First Name is required', 'any.empty': 'First Name should not be empty'}),
+            .messages({'any.required': 'First Name is required', 'string.empty': 'First Name should not be empty', 'string.base': 'First Name must be a string'}),
         lName: Joi
             .string()
             .required()
-            .messages({'any.required': 'Last Name is required', 'any.empty': 'Last Name should not be empty'}),
+            .messages({'any.required': 'Last Name is required', 'any.empty': 'Last Name should not be empty', 'string.base': 'Last Name must be a string'}),
         email: Joi
             .string()
             .email()
             .required()
-            .messages({'any.required': 'Email is required', 'string.email': 'Email must be a valid email'}),
-        sendInvite: Joi.boolean()
+            .messages({'any.required': 'Email is required', 'string.empty': 'Email should not be empty', 'string.email': 'Email must be a valid email'}),
+        sendInvite: Joi
+            .boolean()
+            .messages({'boolean.base': 'Send Invite must be a boolean'})
     };
 
     const userFieldValidateschema = Joi.object(jObj);

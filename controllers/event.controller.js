@@ -21,7 +21,21 @@ exports.index = async function (req, res, next) {
 
 exports.save = async function (req, res) {
     const result = await EventService.save(req, res);
-    console.log(result)
+    if (result) {
+        if (result.status == 'failure') {
+            res
+                .status(400)
+                .json({msg: result})
+        } else {
+            res
+                .status(200)
+                .json({msg: result})
+        }
+    } else {
+        res
+            .status(500)
+            .json({msg: 'Internal Error!'})
+    }
 }
 
 exports.edit = async function (req, res) {

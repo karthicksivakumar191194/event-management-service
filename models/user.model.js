@@ -16,7 +16,8 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: 'Password is required.'
+    required: 'Password is required.',
+    select: false,
   },
   address: {
     type: String,
@@ -45,3 +46,6 @@ const userSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('User', userSchema)
+
+//Including the Excluded Field
+//User.findOne({_id: userId}).select("+password")

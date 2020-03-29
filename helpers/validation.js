@@ -1,5 +1,5 @@
 exports.joiGenerateValidationError = function(err) {
-    //console.log(err)
+    console.log(err)
     if(err){
         const error = {}
 

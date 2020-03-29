@@ -1,14 +1,15 @@
 GET http://localhost:1911/users
-
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTMyODQwMiwiZXhwIjoxNTg1NDE0ODAyfQ.mjB9Rwm9ZAGWfbexP8ZQPU8AFSQFZRcQwcwhU0DQ8s8
 ###
 
 POST http://localhost:1911/users
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTMyODQwMiwiZXhwIjoxNTg1NDE0ODAyfQ.mjB9Rwm9ZAGWfbexP8ZQPU8AFSQFZRcQwcwhU0DQ8s8
 Content-Type: application/json
 
 {
   "fName": "Test4",
   "lName": "Test0",
-  "email": "test50@test.com",
+  "email": "test11@test.com",
   "sendInvite": true
 }
 
