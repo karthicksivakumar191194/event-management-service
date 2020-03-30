@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 class AuthService {
 
-    async login(req, res) {
+    async login(req) {
         const loginFieldValidateschema = Joi.object({
             /*
             name: Joi
@@ -32,11 +32,11 @@ class AuthService {
                 .email()
                 .required()
                 .label("Email Address")
-                .messages({'any.required': 'Email is required', 'string.email': 'Email must be a valid email', 'any.empty': 'Email should not be empty'}),
+                .messages({'any.required': 'Email is required', 'string.email': 'Email must be a valid email', 'string.empty': 'Email should not be empty'}),
             password: Joi
                 .string()
                 .required()
-                .messages({'any.required': 'Password is required', 'any.empty': 'Password should not be empty'})
+                .messages({'any.required': 'Password is required', 'string.empty': 'Password should not be empty'})
         }).options({abortEarly: false});
 
         const loginValidation = loginFieldValidateschema.validate(req.body);
@@ -44,10 +44,20 @@ class AuthService {
         if (loginValidation.error) {
             var error = loginValidation.error;
 
+            const {
+                _original: {
+                    email = ''
+                } = {}
+            } = error;
+
             var errorMessage = {
-                status: 'failure',
+                code: 400,
+                success: false,
+                errorCode: 4002,
                 msg: 'Field Validation Error',
-                oldValues: error._original,
+                oldValues: {
+                    email
+                },
                 error: ValidationHelper.joiGenerateValidationError(error.details)
             }
             // res.status(400).json({ message: error }); res.status(400).json({ message:
@@ -65,10 +75,12 @@ class AuthService {
         //Check if user exists
         return User
             .findOne({email})
+            .select("+password")
             .then(user => {
                 if (!user) {
                     var errorMessage = {
-                        status: 'failure',
+                        code: 404,
+                        success: false,
                         msg: 'User does not exists'
                     }
                     return errorMessage;
@@ -80,18 +92,30 @@ class AuthService {
                     .then(isMatch => {
                         if (!isMatch) {
                             var errorMessage = {
-                                status: 'failure',
-                                msg: 'Invalid Credentials'
+                                code: 400,
+                                success: false,
+                                errorCode: 4001,
+                                msg: 'Invalid Credentials',
+                                oldValues: {
+                                    email
+                                }
                             }
                             return errorMessage;
                         }
                         //Generate JWT Token
-                        var token = jwt.sign({
-                            id: user.id
-                        }, process.env.JWT_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRY});
+                        if (process.env.TOKEN_HAS_EXPIRY == 'True') {
+                            var token = jwt.sign({
+                                id: user.id
+                            }, process.env.JWT_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRY});
+                        } else {
+                            var token = jwt.sign({
+                                id: user.id
+                            }, process.env.JWT_SECRET);
+                        }
                         if (token) {
                             var message = {
-                                status: 'success',
+                                code: 200,
+                                success: true,
                                 msg: 'User LoggedIn Sucessfully',
                                 token
                             }
@@ -135,12 +159,12 @@ class AuthService {
                 .string()
                 .required()
                 .custom(verifyJWTToken)
-                .messages({'any.required': 'Auth Token is required', 'any.invalid': 'Invalid Auth Token', 'any.empty': 'Auth Token should not be empty'}),
+                .messages({'any.required': 'Auth Token is required', 'any.invalid': 'Invalid Auth Token', 'string.empty': 'Auth Token should not be empty'}),
             refreshToken: Joi
                 .string()
                 .required()
                 .custom(verifyRefreshToken)
-                .messages({'any.required': 'Refresh Token is required', 'any.invalid': 'Refresh Token is invalid', 'any.empty': 'Refresh Token should not be empty'})
+                .messages({'any.required': 'Refresh Token is required', 'any.invalid': 'Refresh Token is invalid', 'string.empty': 'Refresh Token should not be empty'})
         }).options({abortEarly: false});
 
         const validation = fieldValidateschema.validate(req.body);
@@ -149,7 +173,9 @@ class AuthService {
             var error = validation.error;
 
             var errorMessage = {
-                status: 'failure',
+                code: 400,
+                success: false,
+                errorCode: 4002,
                 msg: 'Field Validation Error',
                 oldValues: error._original,
                 error: ValidationHelper.joiGenerateValidationError(error.details)
@@ -166,7 +192,8 @@ class AuthService {
         }, process.env.JWT_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRY});
         if (token) {
             var message = {
-                status: 'success',
+                code: 200,
+                success: true,
                 msg: 'New Token Generated Sucessfully',
                 token
             }
@@ -185,15 +212,17 @@ class AuthService {
             .then(user => {
                 if (!user) {
                     var errorMessage = {
-                        status: 'failure',
+                        code: 404,
+                        success: false,
                         msg: 'User does not exists'
                     }
                     return errorMessage;
                 }
                 var message = {
-                    status: 'success',
+                    code: 200,
+                    success: true,
                     msg: 'User Details',
-                    user
+                    data: user
                 }
                 return message;
             })

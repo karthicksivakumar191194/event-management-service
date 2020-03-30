@@ -16,6 +16,11 @@ exports.renderResponse = function (res, result) {
                     .status(400)
                     .json({msg: result});
                 break;
+            case 404:
+                res
+                    .status(404)
+                    .json({msg: result});
+                break;
             default:
                 res
                     .status(500)

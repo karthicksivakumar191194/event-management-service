@@ -12,13 +12,13 @@ POST http://localhost:1911/auth/regenerate-authtoken
 Content-Type: application/json
 
 {
-  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTIxMjYxNSwiZXhwIjoxNTg1MjE2MjE1fQ.3aGkKsUK9X1nCYllfkIc0Hzt_BiocwGtFfHjhRt7Zk0",
+  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTU0MzQ0NiwiZXhwIjoxNTg1NjI5ODQ2fQ.sQO3F6SLuDNO5rryj0lgd-3qme6ItveKpTmQD_aF9D4",
   "refreshToken": "TZuYL2P3D4"
 }
 
 ###
 
 GET http://localhost:1911/auth/user
-x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTIyMTcwNCwiZXhwIjoxNTg1MjI1MzA0fQ.UxJJYZ3TeUIMyZtU3eXsIzjkF1MLBdVEs_8Dd9nNRFs
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTU0MzQ0NiwiZXhwIjoxNTg1NjI5ODQ2fQ.sQO3F6SLuDNO5rryj0lgd-3qme6ItveKpTmQD_aF9D4
 
 ###

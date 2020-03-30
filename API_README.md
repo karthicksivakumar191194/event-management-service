@@ -17,6 +17,6 @@ The server has encountered a situation it doesn't know how to handle.
 
 # ERROR CODES
 **4001**
-Auth Field Erorrs
+Error(Single Line Error)
 **4002**
-Field Erorrs
+Field Erorrs(Error with field names)

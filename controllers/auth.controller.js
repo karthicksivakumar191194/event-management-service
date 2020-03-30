@@ -1,59 +1,18 @@
 const AuthService = require('../services/auth.service');
+const ResponseHelper = require('../helpers/apiResponse')
 const authService = new AuthService();
 
-exports.login = async(req, res, next) => {
-    const result = await authService.login(req, res)
-    if (result) {
-        if (result.status == 'failure') {
-            res
-                .status(400)
-                .json({msg: result})
-        } else {
-            res
-                .status(200)
-                .json({msg: result})
-        }
-    } else {
-        res
-            .status(500)
-            .json({msg: 'Internal Error!'})
-    }
+exports.login = async(req, res) => {
+    const result = await authService.login(req)
+    ResponseHelper.renderResponse(res, result);
 }
 
-exports.regenerateAuthtoken = async function (req, res, next) {
-    const result = await authService.regenerateAuthtoken(req, res);
-    if (result) {
-        if (result.status == 'failure') {
-            res
-                .status(400)
-                .json({msg: result})
-        } else {
-            res
-                .status(200)
-                .json({msg: result})
-        }
-    } else {
-        res
-            .status(500)
-            .json({msg: 'Internal Error!'})
-    }
+exports.regenerateAuthtoken = function (req, res) {
+    const result = authService.regenerateAuthtoken(req);
+    ResponseHelper.renderResponse(res, result);
 }
 
-exports.user = async function (req, res, next) {
-    const result = await authService.getUserByAccessToken(req, res);
-    if (result) {
-        if (result.status == 'failure') {
-            res
-                .status(400)
-                .json({msg: result})
-        } else {
-            res
-                .status(200)
-                .json({msg: result})
-        }
-    } else {
-        res
-            .status(500)
-            .json({msg: 'Internal Error!'})
-    }
+exports.user = async function (req, res) {
+    const result = await authService.getUserByAccessToken(req);
+    ResponseHelper.renderResponse(res, result);
 }
