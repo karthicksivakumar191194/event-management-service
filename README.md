@@ -12,9 +12,9 @@ Rest API for Event Management System.
 - **User Management**
      - List all Users
      - Add User
-	 	  Autogenerate 10 Digit Password
-	 	  Bcrypt User Password
-		   Auto-Email to user with their account info
+	 	   - Autogenerate 10 Digit Password
+	 	   - Bcrypt User Password
+		   - Auto-Email to user with their account info
 - **Event Management**
      - List all Events
      - Add Event
