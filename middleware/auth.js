@@ -5,7 +5,7 @@ function auth(req, res, next) {
 
     //Check for token
     if (!token) 
-        return res.status(401).json({msg: 'No auth-token, authorization required'})
+        return res.status(401).json({code: 401, success: false, msg: 'No auth-token, authorization required'})
 
     try { 
         //Verify token
@@ -17,15 +17,15 @@ function auth(req, res, next) {
         if (e.name === 'TokenExpiredError') {
             res
                 .status(400)
-                .json({success: false, errorCode: 4001, msg: 'Auth Token has been expired.'})
+                .json({code: 400,  errorCode: 4001, success: false, msg: 'Auth Token has been expired.'})
         } else if (e.name === 'JsonWebTokenError') {
             res
                 .status(400)
-                .json({success: false, errorCode: 4001, msg: 'Invalid Auth Token.'})
+                .json({code: 400,  errorCode: 4001, success: false, msg: 'Invalid Auth Token.'})
         } else {
             res
                 .status(500)
-                .json({msg: e.name})
+                .json({code: 500, success: false, msg: e.name})
         }
     }
 

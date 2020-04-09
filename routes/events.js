@@ -9,7 +9,9 @@ let event = require('../controllers/event.controller');
 
 router.get('/', auth, event.index);
 router.post('/', auth, event.save);
-router.get('/:id', auth, checkIfEventExist, event.edit);
+router.get('/:id', auth, checkIfEventExist, event.show);
+router.get('/edit/:id', auth, checkIfEventExist, event.edit);
 router.put('/:id', auth, checkIfEventExist, event.update);
+router.delete('/:id', auth, checkIfEventExist, event.delete);
 
 module.exports = router;

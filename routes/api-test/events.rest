@@ -1,14 +1,20 @@
 GET http://localhost:1911/events
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
+
+###
+
+GET http://localhost:1911/events?page=2&perPage=10
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
 
 ###
 
 POST http://localhost:1911/events
-x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTMyODQwMiwiZXhwIjoxNTg1NDE0ODAyfQ.mjB9Rwm9ZAGWfbexP8ZQPU8AFSQFZRcQwcwhU0DQ8s8
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
 Content-Type: application/json
 
 {
-  "title": "Test Event1",
-  "category": "5e72377bd7616d315438a62e",
+  "title": "Test Event3",
+  "category": ["5e72377bd7616d315438a62e", "5e72377bd7616d315438a62e"],
   "location": "5e723792d7616d315438a62f",
   "price": "500",
   "availableTickets": "10",
@@ -22,5 +28,37 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:1911/events/5e723853d7616d315438a630
-x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTMxMTY0NywiZXhwIjoxNTg1MzE1MjQ3fQ.O3lj87OQ9KutVVTt9nC52bFBWsHwMLQVN4jEm1pZybg
+GET http://localhost:1911/events/5e7dece9743a2964f469a1ac
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
+
+###
+
+GET http://localhost:1911/events/edit/5e7dece9743a2964f469a1ac
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
+
+###
+
+PUT  http://localhost:1911/events/5e7dece9743a2964f469a1ac
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
+Content-Type: application/json
+
+{
+  "title": "Test Event3",
+  "category": ["5e72377bd7616d315438a62e", "5e72377bd7616d315438a62e"],
+  "location": "5e723792d7616d315438a62f",
+  "price": "500",
+  "availableTickets": "10",
+  "maxTicketsPerUser": 2,
+  "startDate": "2020-03-18",
+  "endDate": "2020-03-18",
+  "time": "23:59",
+  "description": "Testing3...........",
+  "createdBy": "5e723700d19fc83f70d7cd3f"
+}
+
+###
+
+DELETE  http://localhost:1911/events/5e723853d7616d315438a631
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4MTRlODJmMmQzZCIsImlhdCI6MTU4NTYzMDgwNX0.r5WUnf3NSsONJj_NF80p_lpZAalelDF9vc9HcoKH4XA
+
+###

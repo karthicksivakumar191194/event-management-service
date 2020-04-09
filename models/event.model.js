@@ -5,14 +5,14 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: 'Event Title is required.'
   },
-  category: { 
+  category: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'EventCategory' 
-  },
-  location: { 
+  }],
+  location: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'EventLocation' 
-  },
+  }],
   price: {
     type: Number
   },

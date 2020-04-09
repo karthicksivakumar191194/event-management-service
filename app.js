@@ -45,4 +45,26 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//Error handler generic implementation
+/*app.use(function (err, req, res, next) {
+  //console.error(err);
+  if (!err.statusCode) {
+      err.statusCode = 500;
+  }
+  let error = {
+      code: err.statusCode,
+      success: false,
+      errorCode: 5001,
+      msg: err.message,
+  };
+  res.status(err.statusCode).send(error);
+});*/
+
+
 module.exports = app;
+
+
+/**
+ * app.get() function is Application-level Middleware.
+ * app.use() means that this middleware will be called for every call to the application.
+ */

@@ -1,30 +1,30 @@
-exports.renderResponse = function (res, result) {
+exports.renderResponse = function (res, result) { 
     if (result) {
         switch (result.code) {
             case 200:
                 res
                     .status(200)
-                    .json({msg: result});
+                    .json(result);
                 break;
             case 201:
                 res
                     .status(201)
-                    .json({msg: result});
+                    .json(result);
                 break;
             case 400:
                 res
                     .status(400)
-                    .json({msg: result});
+                    .json(result);
                 break;
             case 404:
                 res
                     .status(404)
-                    .json({msg: result});
+                    .json(result);
                 break;
             default:
                 res
                     .status(500)
-                    .json({msg: 'Internal Error!'});
+                    .json(result);
         }
     } else {
         res
