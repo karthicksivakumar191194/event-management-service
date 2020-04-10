@@ -43,7 +43,7 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlN2ExNmE5YzI4Yjc4M
 Content-Type: application/json
 
 {
-  "title": "Test Event3",
+  "title": "Test Event4",
   "category": ["5e72377bd7616d315438a62e", "5e72377bd7616d315438a62e"],
   "location": "5e723792d7616d315438a62f",
   "price": "500",
@@ -52,8 +52,7 @@ Content-Type: application/json
   "startDate": "2020-03-18",
   "endDate": "2020-03-18",
   "time": "23:59",
-  "description": "Testing3...........",
-  "createdBy": "5e723700d19fc83f70d7cd3f"
+  "description": "Testing3..........."
 }
 
 ###

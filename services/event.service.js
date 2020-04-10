@@ -75,8 +75,12 @@ exports.save = async function (req) {
 
     const event = new Event({
         title: title,
-        category: category,
-        location: location,
+        category: category
+            ? category
+            : null,
+        location: location
+            ? location
+            : null,
         price: price,
         availableTickets: availableTickets,
         maxTicketsPerUser: maxTicketsPerUser,
@@ -169,14 +173,17 @@ exports.update = async function (req, res) {
             startDate = '',
             endDate = '',
             time = '',
-            description = '',
-            createdBy = ''
+            description = ''
         } = {}
     } = eventValidation;
 
     res.event.title = title;
-    res.event.category = category;
-    res.event.location = location;
+    res.event.category = category
+        ? category
+        : null;
+    res.event.location = location
+        ? location
+        : null;
     res.event.price = price;
     res.event.availableTickets = availableTickets;
     res.event.maxTicketsPerUser = maxTicketsPerUser;
@@ -184,7 +191,6 @@ exports.update = async function (req, res) {
     res.event.endDate = endDate;
     res.event.time = time;
     res.event.description = description;
-    res.event.createdBy = createdBy;
 
     try {
         await res
@@ -234,43 +240,57 @@ function validateFields(req, module) {
         title: Joi
             .string()
             .required()
-            .messages({'any.required': 'Title is required', 'string.empty': 'Title should not be empty'}),
-        category: Joi.optional(),
-        location: Joi.optional(),
+            .messages({'any.required': 'Title is required', 'string.empty': 'Title should not be empty', 'string.base': 'Title must be a string'}),
+        category: Joi
+            .required()
+            .messages({'any.required': 'Category is required'}),
+        location: Joi
+            .required()
+            .messages({'any.required': 'Location is required'}),
         price: Joi
             .number()
+            .required()
             .allow('')
-            .messages({'number.base': 'Price must be a number'}),
+            .messages({'any.required': 'Price is required', 'number.base': 'Price must be a number'}),
         availableTickets: Joi
             .number()
-            .allow('')
-            .messages({'number.base': 'Available Tickets must be a number'}),
+            .required()
+            .messages({'any.required': 'Available Tickets is required', 'number.base': 'Available Tickets must be a number'}),
         maxTicketsPerUser: Joi
             .number()
+            .required()
             .allow('')
             .max(Joi.ref('availableTickets'))
-            .messages({'number.base': 'Max Ticket Per User must be a number', 'number.max': 'Max Ticket Per User must be less than or equal to Available Tickets'}),
+            .messages({'any.required': 'Max Ticket Per User is required', 'number.base': 'Max Ticket Per User must be a number', 'number.max': 'Max Ticket Per User must be less than or equal to Available Tickets', 'any.ref': 'Reference field Available Tickets must be a number'}),
         startDate: Joi
             .date()
-            .format("YYYY-MM-DD")
             .required()
+            .format("YYYY-MM-DD")
             .messages({'any.required': 'Start Date is required', 'date.format': 'Start Date must be in YYYY-MM-DD format'}),
         endDate: Joi
             .date()
+            .required()
             .format("YYYY-MM-DD")
             .allow('')
             .min(Joi.ref('startDate'))
-            .messages({'any.required': 'End Date is required', 'date.format': 'End Date must be in YYYY-MM-DD format', 'date.min': 'End Date must be larger or equal to Start Date'}),
+            .messages({'any.required': 'End Date is required', 'date.format': 'End Date must be in YYYY-MM-DD format', 'date.min': 'End Date must be larger or equal to Start Date', 'any.ref': 'Reference field Start Date must be a date'}),
         time: Joi
             .string()
+            .required()
             .regex(/^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/)
             .allow('')
-            .messages({'string.pattern.base': 'Invalid Time'}),
-        description: Joi.optional(),
-        createdBy: Joi
+            .messages({'any.required': 'Time is required', 'string.pattern.base': 'Invalid Time'}),
+        description: Joi
             .required()
-            .messages({'any.required': 'Created By is required'})
+            .messages({'any.required': 'Description is required'})
     };
+
+    if (module === 'save') {
+        jObj.createdBy = Joi
+            .string()
+            .required()
+            .messages({'any.required': 'Created By is required', 'string.empty': 'Created By should not be empty', 'string.base': 'Created By must be a string'})
+    }
 
     const eventFieldValidateschema = Joi
         .object(jObj)

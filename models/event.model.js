@@ -11,7 +11,7 @@ const eventSchema = new mongoose.Schema({
   }],
   location: [{ 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'EventLocation' 
+    ref: 'EventLocation', 
   }],
   price: {
     type: Number

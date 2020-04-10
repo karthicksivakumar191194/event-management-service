@@ -22,6 +22,7 @@ async function checkIfEventExist(req, res, next) {
     }
 
     req.event_id = req.params.id
+    req.body = req.body
     res.event = event
     next()
 }
